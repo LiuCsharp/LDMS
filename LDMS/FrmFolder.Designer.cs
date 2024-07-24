@@ -31,7 +31,7 @@ namespace LDMS
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             treeList1 = new DevExpress.XtraTreeList.TreeList();
             TName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             popupMenu1 = new DevExpress.XtraBars.PopupMenu(components);
@@ -90,6 +90,10 @@ namespace LDMS
             splitter2 = new Splitter();
             popupMenu4 = new DevExpress.XtraBars.PopupMenu(components);
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            gridControl2 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            PropertyCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            PropertyName = new DevExpress.XtraGrid.Columns.GridColumn();
             panelControl2 = new DevExpress.XtraEditors.PanelControl();
             splitter1 = new Splitter();
             splitter3 = new Splitter();
@@ -108,6 +112,9 @@ namespace LDMS
             xtraTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)popupMenu4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
+            groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridControl2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
             panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
@@ -134,7 +141,7 @@ namespace LDMS
             treeList1.OptionsView.ShowHorzLines = false;
             treeList1.OptionsView.ShowIndicator = false;
             treeList1.OptionsView.ShowVertLines = false;
-            treeList1.Size = new System.Drawing.Size(375, 279);
+            treeList1.Size = new System.Drawing.Size(375, 416);
             treeList1.TabIndex = 0;
             treeList1.BeforeExpand += treeList1_BeforeExpand;
             treeList1.BeforeCollapse += treeList1_BeforeCollapse;
@@ -516,12 +523,12 @@ namespace LDMS
             groupControl1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupControl1.CaptionLocation = DevExpress.Utils.Locations.Top;
             groupControl1.Controls.Add(treeList1);
-            groupControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Button", false, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", 1, true, null, true, false, true, null, 1) });
+            groupControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Button", false, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", 1, true, null, true, false, true, null, 1) });
             groupControl1.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             groupControl1.Dock = DockStyle.Top;
             groupControl1.Location = new System.Drawing.Point(2, 2);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new System.Drawing.Size(379, 309);
+            groupControl1.Size = new System.Drawing.Size(379, 446);
             groupControl1.TabIndex = 0;
             groupControl1.Text = "文件列表";
             // 
@@ -593,12 +600,63 @@ namespace LDMS
             // 
             // groupControl2
             // 
+            groupControl2.Controls.Add(gridControl2);
             groupControl2.Dock = DockStyle.Fill;
-            groupControl2.Location = new System.Drawing.Point(2, 311);
+            groupControl2.Location = new System.Drawing.Point(2, 448);
             groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(379, 273);
+            groupControl2.Size = new System.Drawing.Size(379, 136);
             groupControl2.TabIndex = 33;
             groupControl2.Text = "属性";
+            // 
+            // gridControl2
+            // 
+            gridControl2.Dock = DockStyle.Fill;
+            gridControl2.Location = new System.Drawing.Point(2, 28);
+            gridControl2.MainView = gridView1;
+            gridControl2.MenuManager = barManager1;
+            gridControl2.Name = "gridControl2";
+            gridControl2.Size = new System.Drawing.Size(375, 106);
+            gridControl2.TabIndex = 0;
+            gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            // 
+            // gridView1
+            // 
+            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { PropertyCode, PropertyName });
+            gridView1.GridControl = gridControl2;
+            gridView1.Name = "gridView1";
+            gridView1.OptionsFilter.AllowFilterEditor = false;
+            gridView1.OptionsFind.AllowFindPanel = false;
+            gridView1.OptionsView.ShowColumnHeaders = false;
+            gridView1.OptionsView.ShowGroupPanel = false;
+            gridView1.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.True;
+            gridView1.OptionsView.ShowPreviewRowLines = DevExpress.Utils.DefaultBoolean.True;
+            gridView1.OptionsView.ShowVerticalLines = DevExpress.Utils.DefaultBoolean.True;
+            // 
+            // PropertyCode
+            // 
+            PropertyCode.Caption = "PropertyCode";
+            PropertyCode.FieldName = "PropertyCode";
+            PropertyCode.MinWidth = 25;
+            PropertyCode.Name = "PropertyCode";
+            PropertyCode.OptionsColumn.AllowFocus = false;
+            PropertyCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            PropertyCode.OptionsFilter.AllowFilter = false;
+            PropertyCode.Visible = true;
+            PropertyCode.VisibleIndex = 0;
+            PropertyCode.Width = 80;
+            // 
+            // PropertyName
+            // 
+            PropertyName.Caption = "PropertyName";
+            PropertyName.FieldName = "PropertyName";
+            PropertyName.MinWidth = 25;
+            PropertyName.Name = "PropertyName";
+            PropertyName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            PropertyName.OptionsColumn.ReadOnly = true;
+            PropertyName.OptionsFilter.AllowFilter = false;
+            PropertyName.Visible = true;
+            PropertyName.VisibleIndex = 1;
+            PropertyName.Width = 267;
             // 
             // panelControl2
             // 
@@ -614,7 +672,7 @@ namespace LDMS
             // splitter1
             // 
             splitter1.Dock = DockStyle.Top;
-            splitter1.Location = new System.Drawing.Point(2, 311);
+            splitter1.Location = new System.Drawing.Point(2, 448);
             splitter1.Name = "splitter1";
             splitter1.Size = new System.Drawing.Size(379, 4);
             splitter1.TabIndex = 1;
@@ -670,6 +728,9 @@ namespace LDMS
             xtraTabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)popupMenu4).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
+            groupControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gridControl2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
             panelControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
@@ -742,5 +803,9 @@ namespace LDMS
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private Splitter splitter1;
         private DevExpress.XtraEditors.GroupControl groupControl2;
+        private DevExpress.XtraGrid.GridControl gridControl2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn PropertyCode;
+        private DevExpress.XtraGrid.Columns.GridColumn PropertyName;
     }
 }

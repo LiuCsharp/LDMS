@@ -49,7 +49,6 @@ using DevExpress.XtraScheduler;
 using LDMS.Properties;
 using DevExpress.Data.ExpressionEditor;
 using LDMS.Dto;
-using Microsoft.Office.Interop.Word;
 
 
 namespace LDMS
@@ -108,7 +107,25 @@ namespace LDMS
             UpdateOther();
             SplashScreenManager.ShowForm(typeof(SplashScreen1));
             LoadControls();
+            BindDgv();
             SplashScreenManager.CloseForm(true);
+        }
+
+        public void BindDgv()      
+        {   
+            System.Data.DataTable dt = new System.Data.DataTable();
+            dt.Columns.Add("PropertyCode");
+            dt.Columns.Add("PropertyName");
+           
+            for (int i = 0; i < 4; i++)
+            {
+                PropertyCode p = (PropertyCode)i;
+                DataRow dataRow = dt.NewRow();
+                dataRow["PropertyCode"] = p.ToString();
+                dt.Rows.Add(dataRow);
+            }
+            this.gridControl2.DataSource = dt;
+            
         }
 
         public void UpdateOther()
@@ -1217,6 +1234,17 @@ namespace LDMS
         private void treeList1_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e)
         {
             treeList1.OptionsBehavior.Editable = false;
+            int count= treeList1.Nodes.Count;
+            if (count > 0) 
+            {
+                int id = treeList1.FocusedNode.Id;
+
+                FileDto file = fileDtos.FirstOrDefault(x => x.FileID == id);
+                this.gridView1.SetRowCellValue(0, PropertyName,file.FileName);
+                this.gridView1.SetRowCellValue(1, PropertyName, file.FilePath);
+                this.gridView1.SetRowCellValue(2, PropertyName, file.FileType);
+            }
+          
         }
 
         private void xtraTabControl1_CloseButtonClick(object sender, EventArgs e)

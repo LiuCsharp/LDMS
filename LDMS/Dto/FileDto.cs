@@ -65,4 +65,12 @@ namespace CopyTxtInfo.Dto
         txt,
         jpg
     }
+
+    public enum PropertyCode 
+    {
+        文件名称= 0,
+        文件路径= 1,
+        文件类型 = 2,
+        文件大小 = 3,
+    }
 }
