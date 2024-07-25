@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraRichEdit.Import.Rtf;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace CopyTxtInfo.Dto
 
         //public Image FileImage { get; set; }
 
-
+        public long FileSize { get; set; }
     }
     public  enum FileParentType
     {
@@ -59,11 +60,16 @@ namespace CopyTxtInfo.Dto
 
     public enum FileType 
     {
-        xls,
-        doc,
-        pdf,
-        txt,
-        jpg
+        Folder = 0,
+        Txt= 1,
+        Doc= 2,
+        Docx= 3,
+        xls= 4,
+        xlsx=5,
+        pdf= 6,
+        html= 7,
+        exe= 8,
+
     }
 
     public enum PropertyCode 

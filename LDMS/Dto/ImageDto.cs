@@ -13,6 +13,5 @@ namespace CopyTxtInfo.Dto
         public int ImageID { get; set; }
 
         public string ImageType { get; set; }
-        public Image images { get; set; }
     }
 }

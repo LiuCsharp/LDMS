@@ -49,6 +49,7 @@ using DevExpress.XtraScheduler;
 using LDMS.Properties;
 using DevExpress.Data.ExpressionEditor;
 using LDMS.Dto;
+using DevExpress.DataAccess.Wizard.Presenters;
 
 
 namespace LDMS
@@ -106,8 +107,8 @@ namespace LDMS
         {
             UpdateOther();
             SplashScreenManager.ShowForm(typeof(SplashScreen1));
-            LoadControls();
             BindDgv();
+            LoadControls();           
             SplashScreenManager.CloseForm(true);
         }
 
@@ -223,13 +224,13 @@ namespace LDMS
 
         private void XtraTabControl1_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
         {
-            xtraTabControl1.Focus();
+            /*xtraTabControl1.Focus();
             XtraTabPage xtraTab = xtraTabControl1.SelectedTabPage;
             foreach (Control control in xtraTab.Controls)
             {
                 control.Focus();
                 control.Select();
-            }
+            }*/
         }
 
         protected void MemoEdit_KeyUp(object sender, KeyEventArgs e)
@@ -255,7 +256,7 @@ namespace LDMS
 
         }
 
-
+        
 
         List<TreeListNode> nodeIds = new List<TreeListNode>();
         public void DelTreeListNode(TreeListNode node)
@@ -319,7 +320,7 @@ namespace LDMS
             }
 
             treeList1.Nodes.Remove(node);
-            imageList.Images.RemoveAt(id);
+            //imageList.Images.RemoveAt(id);
 
             fileDtos.Remove(td);
             fileList.Remove(viewDto);
@@ -341,7 +342,7 @@ namespace LDMS
 
             }
 
-            SetTreeViewData();
+            //SetTreeViewData();
         }
 
         private void AddXLSX_ItemClick(object sender, ItemClickEventArgs e)
@@ -417,10 +418,29 @@ namespace LDMS
             int id = node1.Id;
             string path = fileDtos.First(x => x.FileID == id).FilePath;
             path = path + "\\" + name;
-            imageList.Images.Add(GetImage(path));
-            tNode.ImageIndex = tNode.Id + 1;
-            tNode.SelectImageIndex = tNode.Id + 1;
-            fileDtos.Add(new FileDto() { FilePath = path, FileID = tNode.Id, FileName = name, FileType = filetype, FileParentType = FileParentType });
+            bool flag = imageDtos.Any(x => x.ImageType == filetype);
+            int maxid = imageDtos.Max(x => x.ImageID);
+            if (!flag) 
+            {
+                imageList.Images.Add(GetImage(path));
+                maxid = maxid + 1;
+                imageDtos.Add(new ImageDto { ImageID = maxid, ImageType = filetype });
+            }
+
+            long fileSize = 0;
+            if (filetype == "Folder") 
+            {
+                fileSize = Convert.ToInt64(Directory.GetFiles(path).Sum(t => new System.IO.FileInfo(t).Length));
+            }
+            else
+            {
+                fileSize = new System.IO.FileInfo(path).Length;
+
+            }
+            tNode.ImageIndex = maxid;
+            tNode.SelectImageIndex = maxid;
+            
+            fileDtos.Add(new FileDto() { FilePath = path, FileID = tNode.Id, FileName = name, FileType = filetype, FileParentType = FileParentType,FileSize=fileSize });
             fileList.Add(new TreeViewDto() { Id = tNode.Id, ParentId = tNode.ParentNode.Id, TName = name });
             tNode.SetValue("TName", name);
             //treeList1.RefreshDataSource();
@@ -516,7 +536,7 @@ namespace LDMS
             }
 
             string file = folderPath + "\\" + uniqueFileName;
-            var fileInfo = new FileInfo(file);
+            var fileInfo = new System.IO.FileInfo(file);
             if (filetype == "Folder")
             {
                 Directory.CreateDirectory(file);
@@ -635,9 +655,17 @@ namespace LDMS
 
                     fileList = item.TreeViewDto;
                     fileDtos = item.FileDto;
+                    int imageid1 = 0;
                     foreach (var fileDto in fileDtos)
                     {
-                        imageList.Images.Add(GetImage(fileDto.FilePath));
+                        bool flag1 = imageDtos.Any(x => x.ImageType == fileDto.FileType);
+                        if (!flag1) 
+                        {
+                            imageList.Images.Add(GetImage(fileDto.FilePath));
+                            imageDtos.Add(new ImageDto { ImageID = imageid1, ImageType = fileDto.FileType });
+                            imageid1++;
+                        }
+                        
                     }
 
                     imageList.Images.Add(Resources.opendoc_16x16);
@@ -653,14 +681,16 @@ namespace LDMS
                 }   
                 
                 //treeList1.Select();
-               /* TabPageDto pageDto = tabPaged.FirstOrDefault(x=>x.IsLocation==true);
-                if (pageDto != null) {
+                TabPageDto pageDto = tabPaged.FirstOrDefault(x=>x.IsLocation==true);
+                if (pageDto != null)
+                {
                     TreeListNode pFocusNode2 = this.treeList1.FindNodeByFieldValue("TName", pageDto.TabName);
 
                     treeList1.FocusedNode = pFocusNode2;
-                }*/
-                
+
+                }
                 IsSel = true;
+                BindDgv_A();
             }
 
         }
@@ -721,6 +751,7 @@ namespace LDMS
             SplashScreenManager.CloseForm(true);
         }
 
+        long fileSize = 0;
         /// <summary>
         /// 把文件添加到fileList
         /// </summary>
@@ -735,11 +766,12 @@ namespace LDMS
                 string[] info = new string[4];
                 DirectoryInfo di = new DirectoryInfo(dirs[i]);
 
-                imageList.Images.Add(GetImage(di.FullName));
+                //imageList.Images.Add(GetImage(di.FullName));
                 TreeListNode pNode = treeList1.AppendNode(di.Name, listNode);
-                pNode.ImageIndex = pNode.Id;
-                pNode.SelectImageIndex = pNode.Id;
-                fileDtos.Add(new FileDto() { FilePath = di.FullName, FileID = pNode.Id, FileName = di.Name, FileType = "Folder", FileParentType = "Folder" });
+                fileSize= Convert.ToInt64(Directory.GetFiles(di.FullName).Sum(t => new System.IO.FileInfo(t).Length));
+                pNode.ImageIndex = 0;
+                pNode.SelectImageIndex = 0;
+                fileDtos.Add(new FileDto() { FilePath = di.FullName, FileID = pNode.Id, FileName = di.Name, FileType = "Folder", FileParentType = "Folder",FileSize=fileSize });
                 fileList.Add(new TreeViewDto() { Id = pNode.Id, ParentId = pNode.ParentNode.Id, TName = di.Name });
                 //pNode.SetValue(pNode.Id, di.Name);
                 try
@@ -766,8 +798,8 @@ namespace LDMS
 
             for (int j = 0; j < files.Length; j++)
             {
-                FileInfo fi = new FileInfo(files[j]);
-                imageList.Images.Add(FileSystemHelper.GetImage(fi.FullName, IconSizeType.Small, ImageSize));
+                System.IO.FileInfo fi = new System.IO.FileInfo(files[j]);
+              
                 string fileType = fi.Extension.Replace(".", "");
                 string fileParentType = string.Empty;
 
@@ -785,12 +817,22 @@ namespace LDMS
                 {
                     fileParentType = FileParentType.image.ToString();
                 }
+
+                bool flag = imageDtos.Any(x => x.ImageType == fileType);
+                int maxid = imageDtos.Max(x => x.ImageID);
+                if (!flag) 
+                {
+                    imageList.Images.Add(FileSystemHelper.GetImage(fi.FullName, IconSizeType.Small, ImageSize));
+                    maxid = maxid + 1;
+                    imageDtos.Add(new ImageDto { ImageID = maxid , ImageType = fileType });
+                }
+
                 //FileType file = (FileType)Enum.Parse(typeof(FileType), fileType.Substring(0, 3));
                 TreeListNode hNode = treeList1.AppendNode(fi.Name, listNode);
-                hNode.ImageIndex = hNode.Id;
-                hNode.SelectImageIndex = hNode.Id;
-
-                fileDtos.Add(new FileDto() { FilePath = fi.FullName, FileID = hNode.Id, FileName = fi.Name, FileType = fileType, FileParentType = fileParentType });
+                hNode.ImageIndex = maxid ;
+                hNode.SelectImageIndex = maxid;
+                fileSize = fi.Length;
+                fileDtos.Add(new FileDto() { FilePath = fi.FullName, FileID = hNode.Id, FileName = fi.Name, FileType = fileType, FileParentType = fileParentType,FileSize=fileSize });
                 fileList.Add(new TreeViewDto() { Id = hNode.Id, ParentId = hNode.ParentNode.Id, TName = fi.Name });
                 a = a + 1;
             }
@@ -827,6 +869,7 @@ namespace LDMS
             //filedto.FileImage = FileSystemHelper.GetImage(CurrentFolderPath, IconSizeType.Small, ImageSize);
             fileDtos.Add(filedto);
             fileList.Add(new TreeViewDto() { Id = rootNode.Id, ParentId = 0, TName = filedto.FileName, IsExpand = true });
+            imageDtos.Add(new ImageDto { ImageID = 0, ImageType = "Folder" });
             b = a;
             a = rootNode.Id;
 
@@ -834,6 +877,7 @@ namespace LDMS
             imageList.Images.Add(Resources.opendoc_16x16);
             imageid = imageList.Images.Count - 1;
             treeList1.Nodes[0].Expand();
+            BindDgv_A();
             //controlDto.Add(new ControlDto { Path = CurrentFolderPath, TreeViewDto = fileList });
         }
         int c = 0;
@@ -851,8 +895,8 @@ namespace LDMS
                 }
                 else 
                 {
-                    root.ImageIndex = id;
-                    root.SelectImageIndex = id;
+                    root.ImageIndex = 0;
+                    root.SelectImageIndex =0;
                 }
                
 
@@ -878,8 +922,10 @@ namespace LDMS
                 }
                 else 
                 {
-                    list1.ImageIndex = list1.Id;
-                    list1.SelectImageIndex = list1.Id;
+                    FileDto file= fileDtos.FirstOrDefault(x => x.FileID==list1.Id);
+                    int id = imageDtos.FirstOrDefault(e => e.ImageType == file.FileType).ImageID;
+                    list1.ImageIndex = id;
+                    list1.SelectImageIndex = id;
                 }
                
                 TreeListNode treeList1 = list1;
@@ -1126,18 +1172,25 @@ namespace LDMS
                 tab1.Name = fileID.ToString();
                 try
                 {
-                    /*using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    if (filetype == "txt")
                     {
-                        fs.Close();*/
-                    /* Thread thread = new Thread(() =>
-                     {*/
-                    //using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true)) ;
-                   
-                    tab1.Controls.Add(addControl.AddControls(filePath, fileParentType, filetype));
+                        FrmTxt frmTxt = new FrmTxt(filePath);
+                        //frmTxt.MdiParent = this;
+                        //
+                        /*frmTxt.TopLevel = false;
+                        frmTxt.Parent = tab1;*/
+                        
+                        frmTxt.TopLevel = false;
+                        tab1.Controls.Add(frmTxt);
+                        frmTxt.Show();
+                    }
+                    else 
+                    {
+                        tab1.Controls.Add(addControl.AddControls(filePath, fileParentType, filetype));
+                    }
+                    tabPaged.Add(new TabPageDto() { TabID = fileID, TabName = tab, TabText = tab, IsLocation = true, TabPath = filePath, TabIndex = xtraTabControl1.TabPages.Count - 1 });
+                    return;
 
-                    /*});
-                    thread.Start();*/
-                    //}
                 }
                 catch (IOException ex)
                 {
@@ -1148,7 +1201,7 @@ namespace LDMS
                 
 
                 //tab1.TabPageWidth = 100;
-                tabPaged.Add(new TabPageDto() { TabID = fileID, TabName = tab, TabText = tab,  IsLocation = true, TabPath = filePath,TabIndex=xtraTabControl1.TabPages.Count-1 });
+               
 
             }
             else
@@ -1234,17 +1287,29 @@ namespace LDMS
         private void treeList1_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e)
         {
             treeList1.OptionsBehavior.Editable = false;
-            int count= treeList1.Nodes.Count;
-            if (count > 0) 
+            BindDgv_A();
+
+
+        }
+
+        public void BindDgv_A()
+        {
+            int count = treeList1.Nodes.Count;
+            if (count > 0)
             {
                 int id = treeList1.FocusedNode.Id;
 
                 FileDto file = fileDtos.FirstOrDefault(x => x.FileID == id);
-                this.gridView1.SetRowCellValue(0, PropertyName,file.FileName);
-                this.gridView1.SetRowCellValue(1, PropertyName, file.FilePath);
-                this.gridView1.SetRowCellValue(2, PropertyName, file.FileType);
+                if (file != null) 
+                {
+                    long fileSize = (long)Math.Round(file.FileSize / 1024.0);
+                    this.gridView1.SetRowCellValue(0, PropertyName, file.FileName);
+                    this.gridView1.SetRowCellValue(1, PropertyName, file.FilePath);
+                    this.gridView1.SetRowCellValue(2, PropertyName, file.FileType);
+                    this.gridView1.SetRowCellValue(3, PropertyName, fileSize+"KB");
+                }
+                
             }
-          
         }
 
         private void xtraTabControl1_CloseButtonClick(object sender, EventArgs e)
@@ -1541,7 +1606,7 @@ namespace LDMS
 
         private void xtraTabControl1_SelectedPageChanged_1(object sender, TabPageChangedEventArgs e)
         {
-            if (!IsSel) return;
+            /*if (!IsSel) return;
             UpdIsLocation();
             string name = e.Page.Text;
             if (name == "首页") return;
@@ -1558,7 +1623,7 @@ namespace LDMS
                 AddControl addControl = new AddControl();
                 e.Page.Controls.Add(addControl.AddControls(path, fileDto.FileParentType, fileDto.FileType));
                 SplashScreenManager.CloseForm(true);
-            }
+            }*/
         }
 
         private void treeList1_BeforeExpand(object sender, BeforeExpandEventArgs e)
@@ -1574,10 +1639,10 @@ namespace LDMS
         {
             int id = e.Node.Id;
             TreeViewDto treeView = fileList.FirstOrDefault(x => x.Id == id);
-            FileDto fileDto = fileDtos.FirstOrDefault(x => x.FileID > 0 && x.FileType == "Folder");
+
             treeView.IsExpand = false;
-            e.Node.ImageIndex = fileDto.FileID;
-            e.Node.SelectImageIndex = fileDto.FileID;
+            e.Node.ImageIndex = 0;
+            e.Node.SelectImageIndex = 0;
         }      
     }
 }

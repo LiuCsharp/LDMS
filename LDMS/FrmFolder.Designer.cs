@@ -31,7 +31,7 @@ namespace LDMS
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             treeList1 = new DevExpress.XtraTreeList.TreeList();
             TName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             popupMenu1 = new DevExpress.XtraBars.PopupMenu(components);
@@ -523,7 +523,7 @@ namespace LDMS
             groupControl1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupControl1.CaptionLocation = DevExpress.Utils.Locations.Top;
             groupControl1.Controls.Add(treeList1);
-            groupControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Button", false, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", 1, true, null, true, false, true, null, 1) });
+            groupControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Button", false, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", 1, true, null, true, false, true, null, 1) });
             groupControl1.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             groupControl1.Dock = DockStyle.Top;
             groupControl1.Location = new System.Drawing.Point(2, 2);

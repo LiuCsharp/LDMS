@@ -47,6 +47,7 @@
             FrmEmail = new DevExpress.XtraBars.Navigation.NavigationPage();
             FrmMyFolder = new DevExpress.XtraBars.Navigation.NavigationPage();
             FrmSettings = new DevExpress.XtraBars.Navigation.NavigationPage();
+            barSubItem3 = new DevExpress.XtraBars.BarSubItem();
             ((System.ComponentModel.ISupportInitialize)toolbarFormControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)toolbarFormManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navigationPane1).BeginInit();
@@ -65,7 +66,6 @@
             toolbarFormControl1.TitleItemLinks.Add(barButtonItem2);
             toolbarFormControl1.TitleItemLinks.Add(barButtonItem3);
             toolbarFormControl1.TitleItemLinks.Add(barButtonItem1);
-            toolbarFormControl1.TitleItemLinks.Add(barSubItem1);
             toolbarFormControl1.ToolbarForm = this;
             // 
             // toolbarFormManager1
@@ -75,8 +75,8 @@
             toolbarFormManager1.DockControls.Add(barDockControlLeft);
             toolbarFormManager1.DockControls.Add(barDockControlRight);
             toolbarFormManager1.Form = this;
-            toolbarFormManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, barButtonItem2, barButtonItem3, barSubItem1, barButtonItem4, barSubItem2 });
-            toolbarFormManager1.MaxItemId = 11;
+            toolbarFormManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, barButtonItem2, barButtonItem3, barSubItem1, barButtonItem4, barSubItem2, barSubItem3 });
+            toolbarFormManager1.MaxItemId = 12;
             // 
             // barDockControlTop
             // 
@@ -215,6 +215,12 @@
             FrmSettings.Name = "FrmSettings";
             FrmSettings.Size = new System.Drawing.Size(1321, 612);
             // 
+            // barSubItem3
+            // 
+            barSubItem3.Caption = "barSubItem3";
+            barSubItem3.Id = 11;
+            barSubItem3.Name = "barSubItem3";
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -261,5 +267,6 @@
         private DevExpress.XtraBars.Navigation.NavigationPage FrmEmail;
         private DevExpress.XtraBars.Navigation.NavigationPage FrmMyFolder;
         private DevExpress.XtraBars.Navigation.NavigationPage FrmSettings;
+        private DevExpress.XtraBars.BarSubItem barSubItem3;
     }
 }

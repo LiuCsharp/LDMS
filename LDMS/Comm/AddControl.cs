@@ -15,6 +15,7 @@ using DevExpress.XtraBars;
 using DevExpress.Data.ExpressionEditor;
 using LDMS;
 using DevExpress.XtraPdfViewer;
+using System.Threading;
 
 namespace CopyTxtInfo.Comm
 {
@@ -60,7 +61,9 @@ namespace CopyTxtInfo.Comm
 
         private  MemoEdit AddMemoEdit(string filePath)
         {
-            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
+
+            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None, 4096, true);
+            
             StreamReader sr = new StreamReader(fs, Encoding.Default);
             string fileInfo = sr.ReadToEnd();
             MemoEdit memoEdit = new MemoEdit();
