@@ -69,6 +69,7 @@ namespace LDMS
             CloseRightTab = new DevExpress.XtraBars.BarButtonItem();
             CloseNoOneTab = new DevExpress.XtraBars.BarButtonItem();
             CloseAllTab = new DevExpress.XtraBars.BarButtonItem();
+            FileProperty = new DevExpress.XtraBars.BarButtonItem();
             popupMenu2 = new DevExpress.XtraBars.PopupMenu(components);
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             winExplorerView1 = new DevExpress.XtraGrid.Views.WinExplorer.WinExplorerView();
@@ -80,7 +81,6 @@ namespace LDMS
             bar2 = new DevExpress.XtraBars.Bar();
             bar1 = new DevExpress.XtraBars.Bar();
             popupMenu3 = new DevExpress.XtraBars.PopupMenu(components);
-            groupControl1 = new DevExpress.XtraEditors.GroupControl();
             xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
@@ -89,13 +89,14 @@ namespace LDMS
             toolboxGroup1 = new DevExpress.XtraToolbox.ToolboxGroup();
             splitter2 = new Splitter();
             popupMenu4 = new DevExpress.XtraBars.PopupMenu(components);
+            panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            groupControl3 = new DevExpress.XtraEditors.GroupControl();
+            splitter1 = new Splitter();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
             gridControl2 = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             PropertyCode = new DevExpress.XtraGrid.Columns.GridColumn();
             PropertyName = new DevExpress.XtraGrid.Columns.GridColumn();
-            panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            splitter1 = new Splitter();
             splitter3 = new Splitter();
             panelControl1 = new DevExpress.XtraEditors.PanelControl();
             ((System.ComponentModel.ISupportInitialize)treeList1).BeginInit();
@@ -105,18 +106,18 @@ namespace LDMS
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)winExplorerView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)popupMenu3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
-            groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)xtraTabControl1).BeginInit();
             xtraTabControl1.SuspendLayout();
             xtraTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)popupMenu4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
+            panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)groupControl3).BeginInit();
+            groupControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
             groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridControl2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
-            panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
             panelControl1.SuspendLayout();
             SuspendLayout();
@@ -141,7 +142,7 @@ namespace LDMS
             treeList1.OptionsView.ShowHorzLines = false;
             treeList1.OptionsView.ShowIndicator = false;
             treeList1.OptionsView.ShowVertLines = false;
-            treeList1.Size = new System.Drawing.Size(375, 416);
+            treeList1.Size = new System.Drawing.Size(375, 339);
             treeList1.TabIndex = 0;
             treeList1.BeforeExpand += treeList1_BeforeExpand;
             treeList1.BeforeCollapse += treeList1_BeforeCollapse;
@@ -154,8 +155,10 @@ namespace LDMS
             // 
             // TName
             // 
+            TName.AppearanceCell.Options.UseFont = true;
             TName.Caption = "TName";
             TName.FieldName = "TName";
+            TName.ImageOptions.Alignment = System.Drawing.StringAlignment.Center;
             TName.Name = "TName";
             TName.Visible = true;
             TName.VisibleIndex = 0;
@@ -181,8 +184,8 @@ namespace LDMS
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
             barManager1.Form = this;
-            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { DelShortcut, Open, PreView, OpenNew, OpenWin, CopyPath, barButtonItem2, Add, AddFolder, AddShortcut, AddTxt, AddWord, AddExcel, Rename, DelFile, Share, SaveFile, barButtonItem1, barSubItem1, SendMail, SendWeChat, 沙发上大声道, AddDOCX, AddXLSX, CloseOneTab, CloseLeftTab, CloseRightTab, CloseNoOneTab, CloseAllTab });
-            barManager1.MaxItemId = 29;
+            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { DelShortcut, Open, PreView, OpenNew, OpenWin, CopyPath, barButtonItem2, Add, AddFolder, AddShortcut, AddTxt, AddWord, AddExcel, Rename, DelFile, Share, SaveFile, barButtonItem1, barSubItem1, SendMail, SendWeChat, 沙发上大声道, AddDOCX, AddXLSX, CloseOneTab, CloseLeftTab, CloseRightTab, CloseNoOneTab, CloseAllTab, FileProperty });
+            barManager1.MaxItemId = 30;
             barManager1.ItemClick += barManager1_ItemClick;
             // 
             // barDockControlTop
@@ -417,9 +420,17 @@ namespace LDMS
             CloseAllTab.ImageOptions.SvgImage = Properties.Resources.ungroup;
             CloseAllTab.Name = "CloseAllTab";
             // 
+            // FileProperty
+            // 
+            FileProperty.Caption = "属性";
+            FileProperty.Id = 29;
+            FileProperty.ImageOptions.Image = Properties.Resources.contentautoarrange_16x16;
+            FileProperty.ImageOptions.LargeImage = Properties.Resources.contentautoarrange_16x16;
+            FileProperty.Name = "FileProperty";
+            // 
             // popupMenu2
             // 
-            popupMenu2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(Open), new DevExpress.XtraBars.LinkPersistInfo(PreView), new DevExpress.XtraBars.LinkPersistInfo(OpenNew), new DevExpress.XtraBars.LinkPersistInfo(OpenWin), new DevExpress.XtraBars.LinkPersistInfo(CopyPath), new DevExpress.XtraBars.LinkPersistInfo(Add, true), new DevExpress.XtraBars.LinkPersistInfo(Rename), new DevExpress.XtraBars.LinkPersistInfo(DelFile) });
+            popupMenu2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(Open), new DevExpress.XtraBars.LinkPersistInfo(PreView), new DevExpress.XtraBars.LinkPersistInfo(OpenNew), new DevExpress.XtraBars.LinkPersistInfo(OpenWin), new DevExpress.XtraBars.LinkPersistInfo(CopyPath), new DevExpress.XtraBars.LinkPersistInfo(Add, true), new DevExpress.XtraBars.LinkPersistInfo(DelFile), new DevExpress.XtraBars.LinkPersistInfo(Rename), new DevExpress.XtraBars.LinkPersistInfo(FileProperty) });
             popupMenu2.Manager = barManager1;
             popupMenu2.Name = "popupMenu2";
             // 
@@ -518,20 +529,6 @@ namespace LDMS
             popupMenu3.Manager = barManager1;
             popupMenu3.Name = "popupMenu3";
             // 
-            // groupControl1
-            // 
-            groupControl1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupControl1.CaptionLocation = DevExpress.Utils.Locations.Top;
-            groupControl1.Controls.Add(treeList1);
-            groupControl1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Button", false, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", 1, true, null, true, false, true, null, 1) });
-            groupControl1.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
-            groupControl1.Dock = DockStyle.Top;
-            groupControl1.Location = new System.Drawing.Point(2, 2);
-            groupControl1.Name = "groupControl1";
-            groupControl1.Size = new System.Drawing.Size(379, 446);
-            groupControl1.TabIndex = 0;
-            groupControl1.Text = "文件列表";
-            // 
             // xtraTabControl1
             // 
             xtraTabControl1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
@@ -598,15 +595,52 @@ namespace LDMS
             popupMenu4.Name = "popupMenu4";
             popupMenu4.BeforePopup += PopMenu_TabPage_BeforePopup;
             // 
+            // panelControl2
+            // 
+            panelControl2.Controls.Add(groupControl3);
+            panelControl2.Controls.Add(splitter1);
+            panelControl2.Controls.Add(groupControl2);
+            panelControl2.Dock = DockStyle.Left;
+            panelControl2.Location = new System.Drawing.Point(0, 0);
+            panelControl2.Name = "panelControl2";
+            panelControl2.Size = new System.Drawing.Size(383, 586);
+            panelControl2.TabIndex = 34;
+            // 
+            // groupControl3
+            // 
+            groupControl3.Controls.Add(treeList1);
+            groupControl3.Cursor = Cursors.IBeam;
+            groupControl3.Dock = DockStyle.Fill;
+            groupControl3.Location = new System.Drawing.Point(2, 2);
+            groupControl3.Name = "groupControl3";
+            groupControl3.Size = new System.Drawing.Size(379, 369);
+            groupControl3.TabIndex = 4;
+            groupControl3.Text = "文件列表";
+            // 
+            // splitter1
+            // 
+            splitter1.Dock = DockStyle.Bottom;
+            splitter1.Location = new System.Drawing.Point(2, 371);
+            splitter1.Name = "splitter1";
+            splitter1.Size = new System.Drawing.Size(379, 4);
+            splitter1.TabIndex = 3;
+            splitter1.TabStop = false;
+            // 
             // groupControl2
             // 
             groupControl2.Controls.Add(gridControl2);
-            groupControl2.Dock = DockStyle.Fill;
-            groupControl2.Location = new System.Drawing.Point(2, 448);
+            buttonImageOptions1.Image = Properties.Resources.delete_16x164;
+            groupControl2.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("CloseP", false, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            groupControl2.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            groupControl2.Dock = DockStyle.Bottom;
+            groupControl2.Location = new System.Drawing.Point(2, 375);
             groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(379, 136);
-            groupControl2.TabIndex = 33;
+            groupControl2.Size = new System.Drawing.Size(379, 209);
+            groupControl2.TabIndex = 2;
             groupControl2.Text = "属性";
+            groupControl2.CustomButtonClick += groupControl2_CustomButtonClick;
+            groupControl2.CustomButtonChecked += groupControl2_CustomButtonChecked;
+            groupControl2.Paint += groupControl2_Paint;
             // 
             // gridControl2
             // 
@@ -615,7 +649,7 @@ namespace LDMS
             gridControl2.MainView = gridView1;
             gridControl2.MenuManager = barManager1;
             gridControl2.Name = "gridControl2";
-            gridControl2.Size = new System.Drawing.Size(375, 106);
+            gridControl2.Size = new System.Drawing.Size(375, 179);
             gridControl2.TabIndex = 0;
             gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -657,26 +691,6 @@ namespace LDMS
             PropertyName.Visible = true;
             PropertyName.VisibleIndex = 1;
             PropertyName.Width = 267;
-            // 
-            // panelControl2
-            // 
-            panelControl2.Controls.Add(splitter1);
-            panelControl2.Controls.Add(groupControl2);
-            panelControl2.Controls.Add(groupControl1);
-            panelControl2.Dock = DockStyle.Left;
-            panelControl2.Location = new System.Drawing.Point(0, 0);
-            panelControl2.Name = "panelControl2";
-            panelControl2.Size = new System.Drawing.Size(383, 586);
-            panelControl2.TabIndex = 34;
-            // 
-            // splitter1
-            // 
-            splitter1.Dock = DockStyle.Top;
-            splitter1.Location = new System.Drawing.Point(2, 448);
-            splitter1.Name = "splitter1";
-            splitter1.Size = new System.Drawing.Size(379, 4);
-            splitter1.TabIndex = 1;
-            splitter1.TabStop = false;
             // 
             // splitter3
             // 
@@ -721,18 +735,18 @@ namespace LDMS
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)winExplorerView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)popupMenu3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
-            groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)xtraTabControl1).EndInit();
             xtraTabControl1.ResumeLayout(false);
             xtraTabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)popupMenu4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
+            panelControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)groupControl3).EndInit();
+            groupControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
             groupControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridControl2).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
-            panelControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
             panelControl1.ResumeLayout(false);
             ResumeLayout(false);
@@ -780,7 +794,6 @@ namespace LDMS
         private DevExpress.XtraBars.PopupMenu popupMenu3;
         private DevExpress.XtraBars.BarButtonItem SendMail;
         private DevExpress.XtraBars.BarButtonItem SendWeChat;
-        private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
@@ -801,11 +814,13 @@ namespace LDMS
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private Splitter splitter3;
         private DevExpress.XtraEditors.PanelControl panelControl2;
-        private Splitter splitter1;
+        private DevExpress.XtraBars.BarButtonItem FileProperty;
         private DevExpress.XtraEditors.GroupControl groupControl2;
         private DevExpress.XtraGrid.GridControl gridControl2;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraGrid.Columns.GridColumn PropertyCode;
         private DevExpress.XtraGrid.Columns.GridColumn PropertyName;
+        private DevExpress.XtraEditors.GroupControl groupControl3;
+        private Splitter splitter1;
     }
 }

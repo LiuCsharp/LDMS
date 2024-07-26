@@ -108,7 +108,7 @@ namespace LDMS
                 lineSpace = Convert.ToInt32(this.memoEdit1.Font.Size);
             }
 
-            int brushX = this.panelControl1.ClientRectangle.Width - Convert.ToInt32(font.Size * 3);
+            int brushX = 15;
             int width = this.panelControl1.Width;
             //int brushY = crntLastPos.Y + Convert.ToInt32(font.Size * 0.21f);
             int brushY = 0;

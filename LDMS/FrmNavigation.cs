@@ -40,6 +40,7 @@ using DevExpress.DataAccess.Native.Data;
 using DevExpress.XtraVerticalGrid.Native;
 using DevExpress.Utils;
 using LDMS.Comm;
+using System.Text.RegularExpressions;
 
 
 
@@ -56,16 +57,27 @@ namespace LDMS
             this.comboBoxEdit1.ButtonClick += ComboBoxEdit1_ButtonClick;
             this.comboBoxEdit1.Properties.ContextButtonClick += Properties_ContextButtonClick;
         }
+
         public string path { get; set; }
         public BindingList<BindFile> dataTables = new BindingList<BindFile>();
         public List<string> search = new List<string>();
         public List<FileList> fileLists = new List<FileList>();
+        public List<AddFilePath> addFiles = new List<AddFilePath>();
+
 
         private void FrmNavigation_Load(object sender, EventArgs e)
         {
             tileView1.OptionsTiles.GroupTextPadding = new Padding(-10, 0, 0, 10);
+            panelControl3.Visible = false;
+            panelControl2.Visible = false;
             BindTileView();
             BindComBox();
+            TbFileName.Properties.AppearanceFocused.BackColor = Color.FromArgb(248, 248, 248);
+            CmbFilePath.Properties.AppearanceFocused.BackColor = Color.FromArgb(248, 248, 248);
+            comboBoxEdit1.Properties.AppearanceFocused.BackColor = Color.FromArgb(248, 248, 248);
+            /*TbFileName.Properties.Appearance.BackColor = Color.FromArgb(230, 230, 230);
+            CmbFilePath.Properties.Appearance.BackColor = Color.FromArgb(230, 230, 230);*/
+
         }
 
         public void BindComBox()
@@ -75,6 +87,7 @@ namespace LDMS
             {
                 comboBoxEdit1.Properties.Items.Add(json);
             }
+
         }
 
         public void BindTileView()
@@ -299,9 +312,204 @@ namespace LDMS
             }*/
         }
 
-        /*private void comboBoxEdit1_DrawItem(object sender, ListBoxDrawItemEventArgs e)
+        private void hyperlinkLabelControl1_Click(object sender, EventArgs e)
         {
-            Graphics graphics = e.Graphics;
-        }*/
+
+        }
+
+        private void labelControl6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tileBarItem2_ItemClick(object sender, TileItemEventArgs e)
+        {
+            panelControl1.Visible = false;
+            panelControl2.Visible = true;
+            panelControl3.Visible = true;
+
+
+            int count = CmbFilePath.Properties.Items.Count;
+            if (count == 0)
+            {
+                BindAddFileComBox();
+            }
+
+
+            TbFileName.Focus();
+            TbFileName.BorderStyle = BorderStyles.Simple;
+        }
+
+
+        public void GetUniqueFileName(string path)
+        {
+            string uniqueFileName = "新建文件夹";
+            int counter = 1;
+            if (path == "") return;
+
+            // 检查文件名是否重复
+            while (Directory.Exists(path + "\\" + uniqueFileName))
+            {
+                // 通过正则表达式从文件名中提取数字后缀
+                var match = Regex.Match("新建文件夹", @"^(.*?)(-\d+)?\.([^.]+)$");
+                if (match.Success)
+                {
+                    // 如果已经有数字后缀，就增加它
+                    if (match.Groups[2].Success)
+                    {
+                        uniqueFileName = $"{match.Groups[1].Value}({counter++}).{match.Groups[3].Value}";
+
+                    }
+                    else
+                    {
+                        // 添加第一个数字后缀
+                        uniqueFileName = $"{match.Groups[1].Value}({counter++}).{match.Groups[3].Value}";
+                    }
+                }
+                else
+                {
+                    // 如果没有找到匹配，就添加一个新的数字后缀
+                    uniqueFileName = $"新建文件夹({counter++})";
+                }
+            }
+
+            TbFileName.Text = uniqueFileName;
+
+            labelControl8.Text = $"文件夹 将在\"{path}\\\" 中创建";
+        }
+
+        public void BindAddFileComBox()
+        {
+            addFiles = UPDFile<AddFilePath>.UPDFiles("Jsons\\AddFilePath.json");
+            foreach (var path in addFiles)
+            {
+                CmbFilePath.Properties.Items.Add(path.FilePath);
+                if (path.LastOpen)
+                {
+                    CmbFilePath.SelectedItem = path.FilePath;
+                    GetUniqueFileName(path.FilePath);
+                }
+            }
+        }
+
+        private void BtnBack_Click(object sender, EventArgs e)
+        {
+            panelControl1.Visible = true;
+            panelControl2.Visible = false;
+            panelControl3.Visible = false;
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            string fileName = TbFileName.Text;
+            if (fileName == "")
+            {
+                MessageBox.Show("请输入文件夹名称！");
+                TbFileName.Focus();
+                return;
+            }
+            string filePath = CmbFilePath.Text;
+            if (filePath == "")
+            {
+                MessageBox.Show("请选择文件夹路径！");
+                CmbFilePath.Focus();
+                return;
+            }
+
+            if (File.Exists(filePath + "\\" + fileName))
+            {
+                MessageBox.Show("该文件夹在当前路径已存在！");
+                TbFileName.Focus();
+                return;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show("当前路径不存在！");
+                CmbFilePath.Focus();
+                return;
+            }
+
+            Directory.CreateDirectory(filePath + "\\" + fileName);
+
+            foreach (var file in addFiles)
+            {
+                file.LastOpen = false;
+            }
+
+            var b = addFiles.FirstOrDefault(x => x.FilePath == filePath);
+            if (b != null)
+            {
+                b.OpenNumber++;
+                b.LastOpen = true;
+            }
+            else
+            {
+                addFiles.Add(new AddFilePath { FilePath = filePath, OpenNumber = 1, LastOpen = true });
+            }
+
+            UPDFile<AddFilePath>.UPDFile_A("Jsons\\AddFilePath.json", addFiles);
+
+            this.path = filePath + "\\" + fileName;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void BtnOpen_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog myFolderBrowserDialog = new FolderBrowserDialog();
+            myFolderBrowserDialog.ShowNewFolderButton = false;
+            myFolderBrowserDialog.ShowDialog();
+
+            if (myFolderBrowserDialog.SelectedPath != "")
+            {
+                CmbFilePath.Text = myFolderBrowserDialog.SelectedPath;
+                GetUniqueFileName(myFolderBrowserDialog.SelectedPath);
+                CmbFilePath.Select();
+                CmbFilePath.BorderStyle = BorderStyles.Simple;
+            }
+        }
+
+        private void CmbFilePath_EditValueChanged(object sender, EventArgs e)
+        {
+            string path = CmbFilePath.Text;
+            labelControl8.Text = $"文件夹 将在\"{path}\\\" 中创建";
+        }
+
+        private void TbFileName_Leave(object sender, EventArgs e)
+        {
+            TbFileName.BorderStyle = BorderStyles.NoBorder;
+
+        }
+
+        private void TbFileName_Click(object sender, EventArgs e)
+        {
+            TbFileName.BorderStyle = BorderStyles.Simple;
+        }
+
+        private void CmbFilePath_Leave(object sender, EventArgs e)
+        {
+            CmbFilePath.BorderStyle = BorderStyles.NoBorder;
+        }
+
+        private void CmbFilePath_Click(object sender, EventArgs e)
+        {
+            CmbFilePath.BorderStyle = BorderStyles.Simple;
+        }
+
+        private void CmbFilePath_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void comboBoxEdit1_Leave(object sender, EventArgs e)
+        {
+            comboBoxEdit1.BorderStyle = BorderStyles.NoBorder;
+        }
+
+        private void comboBoxEdit1_Click(object sender, EventArgs e)
+        {
+            comboBoxEdit1.BorderStyle = BorderStyles.Simple;
+        }
     }
 }

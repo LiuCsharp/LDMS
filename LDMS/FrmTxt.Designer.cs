@@ -53,7 +53,7 @@
             memoEdit1.Location = new System.Drawing.Point(0, 0);
             memoEdit1.Name = "memoEdit1";
             memoEdit1.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            memoEdit1.Size = new System.Drawing.Size(966, 457);
+            memoEdit1.Size = new System.Drawing.Size(952, 457);
             memoEdit1.TabIndex = 4;
             memoEdit1.EditValueChanged += memoEdit1_EditValueChanged;
             memoEdit1.MouseMove += memoEdit1_MouseMove;
@@ -135,7 +135,7 @@
             panelControl1.Dock = System.Windows.Forms.DockStyle.Left;
             panelControl1.Location = new System.Drawing.Point(0, 27);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new System.Drawing.Size(48, 457);
+            panelControl1.Size = new System.Drawing.Size(62, 457);
             panelControl1.TabIndex = 9;
             panelControl1.Paint += panelControl1_Paint;
             // 
@@ -144,9 +144,9 @@
             panelControl2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             panelControl2.Controls.Add(memoEdit1);
             panelControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panelControl2.Location = new System.Drawing.Point(48, 27);
+            panelControl2.Location = new System.Drawing.Point(62, 27);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new System.Drawing.Size(966, 457);
+            panelControl2.Size = new System.Drawing.Size(952, 457);
             panelControl2.TabIndex = 10;
             // 
             // FrmTxt
