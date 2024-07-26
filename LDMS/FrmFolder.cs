@@ -1575,8 +1575,6 @@ namespace LDMS
                     if (flag3)
                     {
                         this.popupMenu4.ShowPopup(Control.MousePosition);
-
-
                     }
                 }
             }
