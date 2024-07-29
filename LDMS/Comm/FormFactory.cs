@@ -1,4 +1,5 @@
 ﻿using DevExpress.CodeParser;
+using LDMS.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace LDMS.Comm
             
         }
 
-        public static Form CreateForm(string formName,string path)
+        public static Form CreateForm(string formName,string path, List<FileList> fileLists)
         {
             //HideFormAll(formName);
             formName = formName == null ? "FrmNone" : formName;
@@ -40,7 +41,7 @@ namespace LDMS.Comm
             object[] parameters = new object[] { path };
             if (formName.Equals("FrmFolder"))
             {
-                form = (Form)Activator.CreateInstance(type, path);
+                form = (Form)Activator.CreateInstance(type, path, fileLists);
             }
             else 
             {
@@ -57,6 +58,43 @@ namespace LDMS.Comm
             {
                 if (frm.Name == formName) frm.Hide();
             }
+        }
+
+
+        public static string GetDay(string date)
+        {
+            string day = "";
+            TimeSpan span = DateTime.Now - Convert.ToDateTime(date);
+
+            if (span.TotalDays > 30)
+            {
+                decimal days = span.Days / 30;
+                days = Math.Ceiling(days);
+                day = days.ToString() + "月前";
+            }
+            else if (span.TotalDays > 21)
+            {
+                day = "3周前";
+            }
+            else if (span.TotalDays > 14)
+            {
+                day = "2周前";
+            }
+            else if (span.TotalDays > 7)
+            {
+                day = "1周前";
+            }
+            else if (span.TotalDays > 1)
+            {
+                day = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
+            }
+            else if (span.TotalHours > 1)
+            {
+                day = "今天";
+            }
+
+            return day;
+
         }
     }
 }

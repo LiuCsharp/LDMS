@@ -24,20 +24,23 @@ namespace LDMS
         public string path { set; get; }
 
         FrmFolder frmFolder = new FrmFolder();
+
+        public List<FileList> _fileLists { get; set; } = new List<FileList>();
         public FrmMain()
         {
             InitializeComponent();
         }
 
-        public FrmMain(string _path)
+        public FrmMain(string _path, List<FileList> fileLists)
         {
             InitializeComponent();
             this.path = _path;
+            this._fileLists = fileLists;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            FrmFolder folder = new FrmFolder(path);
+            FrmFolder folder = new FrmFolder(path, _fileLists);
             frmFolder = folder;
             folder.MdiParent = this;
             folder.Parent = FrmFolder;
@@ -93,13 +96,13 @@ namespace LDMS
                 if (File.Exists(path))
                 {
 
-                    bool flag = frmFolder.controlDto.Any(x => x.Path == this.path);
+                    bool flag = frmFolder.controlDto.Any(x => x.Path == frmFolder.CurrentFolderPath);
                     if (!flag)
                     {
                         frmFolder.controlDto.Add(
                             new ControlDto
                             {
-                                Path = this.path,
+                                Path = frmFolder.CurrentFolderPath,
                                 TreeViewDto = frmFolder.fileList,
                                 TabPageDto = frmFolder.tabPaged,
                                 ShortcutsControl = frmFolder.shortcutsControls,
@@ -111,7 +114,7 @@ namespace LDMS
                     else
                     {
                         var c = frmFolder.controlDto.Where(x => x.Path == this.path).FirstOrDefault();
-                        c.Path = this.path;
+                        c.Path = frmFolder.CurrentFolderPath;
                         c.TreeViewDto = frmFolder.fileList;
                         c.TabPageDto = frmFolder.tabPaged;
                         c.ShortcutsControl = frmFolder.shortcutsControls;
@@ -124,7 +127,7 @@ namespace LDMS
                     frmFolder.controlDto.Add(
                             new ControlDto
                             {
-                                Path = this.path,
+                                Path = frmFolder.CurrentFolderPath,
                                 TreeViewDto = frmFolder.fileList,
                                 TabPageDto = frmFolder.tabPaged,
                                 ShortcutsControl = frmFolder.shortcutsControls,
@@ -151,7 +154,7 @@ namespace LDMS
             bool b = frmlist.Any(x => x.Equals(frmName));
             if (!b)
             {
-                frm = Comm.FormFactory.CreateForm(frmName, path);
+                frm = Comm.FormFactory.CreateForm(frmName, path,_fileLists);
 
                 frm.MdiParent = this;
                 if (frmName == "FrmFolder")

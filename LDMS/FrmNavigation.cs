@@ -61,9 +61,8 @@ namespace LDMS
         public string path { get; set; }
         public BindingList<BindFile> dataTables = new BindingList<BindFile>();
         public List<string> search = new List<string>();
-        public List<FileList> fileLists = new List<FileList>();
+        public List<FileList> fileLists { get; set; } = new List<FileList>();
         public List<AddFilePath> addFiles = new List<AddFilePath>();
-
 
         private void FrmNavigation_Load(object sender, EventArgs e)
         {
@@ -103,7 +102,7 @@ namespace LDMS
                 fileList.FilePath = file.FilePath;
                 fileList.FileTime = file.FileTime;
                 fileList.FileImage = GetImage(file.FilePath);
-                fileList.FileDate = GetDay(file.FileDate);
+                fileList.FileDate =  FormFactory.GetDay(file.FileDate);
                 dataTables.Add(fileList);
             }
             this.gridControl1.DataSource = dataTables;
@@ -189,41 +188,7 @@ namespace LDMS
             this.Close();
         }
 
-        public string GetDay(string date)
-        {
-            string day = "";
-            TimeSpan span = DateTime.Now - Convert.ToDateTime(date);
-
-            if (span.TotalDays > 30)
-            {
-                decimal days = span.Days / 30;
-                days = Math.Ceiling(days);
-                day = days.ToString() + "月前";
-            }
-            else if (span.TotalDays > 21)
-            {
-                day = "3周前";
-            }
-            else if (span.TotalDays > 14)
-            {
-                day = "2周前";
-            }
-            else if (span.TotalDays > 7)
-            {
-                day = "1周前";
-            }
-            else if (span.TotalDays > 1)
-            {
-                day = string.Format("{0}天前", (int)Math.Floor(span.TotalDays));
-            }
-            else if (span.TotalHours > 1)
-            {
-                day = "今天";
-            }
-
-            return day;
-
-        }
+        
 
         protected Image GetImage(string fullName)
         {

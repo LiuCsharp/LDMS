@@ -60,7 +60,7 @@ namespace LDMS
             if (frmmain.ShowDialog() == DialogResult.OK)
             {
                 //frmmain.Close();
-                FrmMain form1 = new FrmMain(frmmain.path);
+                FrmMain form1 = new FrmMain(frmmain.path,frmmain.fileLists);
                 form1.ShowDialog();
             }
         }
