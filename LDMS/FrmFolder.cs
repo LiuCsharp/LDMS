@@ -51,6 +51,7 @@ using DevExpress.Data.ExpressionEditor;
 using LDMS.Dto;
 using DevExpress.DataAccess.Wizard.Presenters;
 using LDMS.Comm;
+using DevExpress.XtraGauges.Presets.PresetManager;
 
 
 namespace LDMS
@@ -155,8 +156,8 @@ namespace LDMS
             treeList1.ParentFieldName = "ParentId";
 
             treeList1.OptionsBehavior.Editable = false;
-            treeList1.RowHeight = 20;
-
+            treeList1.RowHeight = 24;
+            imageList.ImageSize = new Size(20, 20);
             treeList1.MouseDoubleClick -= treeList1_MouseDoubleClick_InOne;
             treeList1.MouseDoubleClick += treeList1_MouseDoubleClick_InOne;
             treeList1.ForceInitialize();
@@ -195,8 +196,6 @@ namespace LDMS
 
             groupControl2.AppearanceCaption.BorderColor = Color.FromArgb(230, 230, 230);
         }
-
-
 
         private void CloseAllTab_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -734,16 +733,26 @@ namespace LDMS
                     fileList = item.TreeViewDto;
                     fileDtos = item.FileDto;
                     int imageid1 = 0;
-                    foreach (var fileDto in fileDtos)
-                    {
-                        bool flag1 = imageDtos.Any(x => x.ImageType == fileDto.FileType);
+                    var newFile = fileDtos.GroupBy(x => x.ImageString).Select(x => new { ImageString = x.Key, FilePath=x.Min(e=>e.FilePath),FileType=x.Min(e=>e.FileType) });
+
+                    foreach (var fileDto in newFile)
+                    {                        
+                        string imageString = string.Empty;
+                        if (fileDto.FileType == "Folder")
+                        {
+                            imageString = "430424";
+                        }
+                        else 
+                        {
+                            imageString = GetImageBase64String(fileDto.FilePath);
+                        }                        
+                        bool flag1 = imageDtos.Any(x => x.ImageBase64String.Equals(imageString));
                         if (!flag1)
                         {
                             imageList.Images.Add(GetImage(fileDto.FilePath));
-                            imageDtos.Add(new ImageDto { ImageID = imageid1, ImageType = fileDto.FileType });
+                            imageDtos.Add(new ImageDto { ImageID = imageid1, ImageType = fileDto.FileType,ImageBase64String=imageString });
                             imageid1++;
                         }
-
                     }
 
                     imageList.Images.Add(Resources.opendoc_16x16);
@@ -772,6 +781,22 @@ namespace LDMS
             }
 
         }
+        public static string GetImageBase64String(string imagePath)
+        {
+            string imageString = string.Empty;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                System.Drawing.Icon icon = SystemIcons.WinLogo;
+                icon = System.Drawing.Icon.ExtractAssociatedIcon(imagePath);
+                Image largeIcon = icon.ToBitmap();
+                using (Image image = largeIcon)
+                {
+                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    imageString = Convert.ToBase64String(memoryStream.ToArray());
+                }
+            }
+            return imageString;
+        }
 
         public void AddTabAsync()
         {
@@ -780,7 +805,6 @@ namespace LDMS
 
             foreach (var tabPage in tabPaged)
             {
-
                 int Sum = xtraTabControl1.TabPages.Count;
                 Sum = Sum + 1 - 1;
                 FileDto fileDto = fileDtos.FirstOrDefault(x => x.FileID == tabPage.TabID);
@@ -799,7 +823,6 @@ namespace LDMS
                 Pairs.Add(fileDto.FilePath, tab1);
 
             }
-
         }
 
         public void BindTreeView()
@@ -850,7 +873,7 @@ namespace LDMS
                 fileSize = Convert.ToInt64(Directory.GetFiles(di.FullName).Sum(t => new System.IO.FileInfo(t).Length));
                 pNode.ImageIndex = 0;
                 pNode.SelectImageIndex = 0;
-                fileDtos.Add(new FileDto() { FilePath = di.FullName, FileID = pNode.Id, FileName = di.Name, FileType = "Folder", FileParentType = "Folder", FileSize = fileSize });
+                fileDtos.Add(new FileDto() { FilePath = di.FullName, FileID = pNode.Id, FileName = di.Name, FileType = "Folder", FileParentType = "Folder", FileSize = fileSize,ImageString="430424" });
                 fileList.Add(new TreeViewDto() { Id = pNode.Id, ParentId = pNode.ParentNode.Id, TName = di.Name });
                 //pNode.SetValue(pNode.Id, di.Name);
                 try
@@ -897,13 +920,15 @@ namespace LDMS
                     fileParentType = FileParentType.image.ToString();
                 }
 
-                bool flag = imageDtos.Any(x => x.ImageType == fileType);
+
+                string imageString = GetImageBase64String(fi.FullName);
+                var flag = imageDtos.Any(x => x.ImageBase64String == imageString);
                 int maxid = imageDtos.Max(x => x.ImageID);
                 if (!flag)
                 {
-                    imageList.Images.Add(FileSystemHelper.GetImage(fi.FullName, IconSizeType.Small, ImageSize));
+                    imageList.Images.Add(GetImage(fi.FullName));
                     maxid = maxid + 1;
-                    imageDtos.Add(new ImageDto { ImageID = maxid, ImageType = fileType });
+                    imageDtos.Add(new ImageDto { ImageID = maxid, ImageType = fileType,ImageBase64String=imageString });
                 }
 
                 //FileType file = (FileType)Enum.Parse(typeof(FileType), fileType.Substring(0, 3));
@@ -911,7 +936,7 @@ namespace LDMS
                 hNode.ImageIndex = maxid;
                 hNode.SelectImageIndex = maxid;
                 fileSize = fi.Length;
-                fileDtos.Add(new FileDto() { FilePath = fi.FullName, FileID = hNode.Id, FileName = fi.Name, FileType = fileType, FileParentType = fileParentType, FileSize = fileSize });
+                fileDtos.Add(new FileDto() { FilePath = fi.FullName, FileID = hNode.Id, FileName = fi.Name, FileType = fileType, FileParentType = fileParentType, FileSize = fileSize,ImageString=imageString });
                 fileList.Add(new TreeViewDto() { Id = hNode.Id, ParentId = hNode.ParentNode.Id, TName = fi.Name });
                 a = a + 1;
             }
@@ -939,6 +964,7 @@ namespace LDMS
             imageList.Images.Add(GetImage(CurrentFolderPath));
             treeList1.DataSource = null;
             TreeListNode rootNode = treeList1.Nodes.Add(filedto.FileName);
+            fileSize = Convert.ToInt64(Directory.GetFiles(CurrentFolderPath).Sum(t => new System.IO.FileInfo(t).Length));
             //rootNode.SetValue("TName", filedto.FileName);
             rootNode.ImageIndex = 0;
             rootNode.SelectImageIndex = 0;
@@ -947,10 +973,12 @@ namespace LDMS
             filedto.FilePath = CurrentFolderPath;
             filedto.FileType = "Folder";
             filedto.FileParentType = "Folder";
+            filedto.ImageString = "430424";
+            filedto.FileSize = fileSize;
             //filedto.FileImage = FileSystemHelper.GetImage(CurrentFolderPath, IconSizeType.Small, ImageSize);
             fileDtos.Add(filedto);
             fileList.Add(new TreeViewDto() { Id = rootNode.Id, ParentId = 0, TName = filedto.FileName, IsExpand = true });
-            imageDtos.Add(new ImageDto { ImageID = 0, ImageType = "Folder" });
+            imageDtos.Add(new ImageDto { ImageID = 0, ImageType = "Folder",ImageBase64String="430424" });
             b = a;
             a = rootNode.Id;
 
@@ -979,15 +1007,14 @@ namespace LDMS
                     root.Expand();
                     root.ImageIndex = imageid;
                     root.SelectImageIndex = imageid;
+                    SetTreeViewImage(root);
                 }
                 else
                 {
                     root.ImageIndex = 0;
                     root.SelectImageIndex = 0;
                 }
-
-
-                SetTreeViewImage(root);
+                
             }
         }
 
@@ -1006,24 +1033,33 @@ namespace LDMS
                     list1.Expand();
                     list1.ImageIndex = imageid;
                     list1.SelectImageIndex = imageid;
+                    TreeListNode treeList1 = list1;
+                    if (treeList1.Nodes.Count > 0)
+                    {
+                        SetTreeViewImage(treeList1);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
                 else
                 {
                     FileDto file = fileDtos.FirstOrDefault(x => x.FileID == list1.Id);
-                    int id = imageDtos.FirstOrDefault(e => e.ImageType == file.FileType).ImageID;
+                    string imageString = string.Empty;
+                    if (file.FileType == "Folder")
+                    {
+                        imageString = "430424";
+                    }
+                    else
+                    {
+                        imageString = GetImageBase64String(file.FilePath);
+                    }
+
+                    int id = imageDtos.FirstOrDefault(e => e.ImageBase64String.Equals(imageString)).ImageID;
                     list1.ImageIndex = id;
                     list1.SelectImageIndex = id;
-                }
-
-                TreeListNode treeList1 = list1;
-                if (treeList1.Nodes.Count > 0)
-                {
-                    SetTreeViewImage(treeList1);
-                }
-                else
-                {
-                    continue;
-                }
+                }              
             }
         }
 
@@ -1424,8 +1460,12 @@ namespace LDMS
 
             foreach (Control t in page.Controls)
             {
-                if (t is System.Windows.Forms.Control)
+                if (t is System.Windows.Forms.Control) 
+                {
                     t.Controls.Clear();
+                    t.Dispose();
+                }
+                    
             }
 
             page.Dispose();
@@ -1719,6 +1759,25 @@ namespace LDMS
             treeView.IsExpand = true;
             e.Node.ImageIndex = imageList.Images.Count - 1;
             e.Node.SelectImageIndex = imageList.Images.Count - 1;
+            foreach (TreeListNode list1 in e.Node.Nodes)
+            {
+
+                FileDto file = fileDtos.FirstOrDefault(x => x.FileID == list1.Id);
+                string imageString = string.Empty;
+                if (file.FileType == "Folder")
+                {
+                    imageString = "430424";
+                }
+                else
+                {
+                    imageString = GetImageBase64String(file.FilePath);
+                }
+
+                int id1 = imageDtos.FirstOrDefault(e => e.ImageBase64String.Equals(imageString)).ImageID;
+                list1.ImageIndex = id1;
+                list1.SelectImageIndex = id1;
+
+            }
         }
 
         private void treeList1_BeforeCollapse(object sender, BeforeCollapseEventArgs e)

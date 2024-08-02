@@ -13,5 +13,7 @@ namespace CopyTxtInfo.Dto
         public int ImageID { get; set; }
 
         public string ImageType { get; set; }
+
+        public string ImageBase64String { get; set; }
     }
 }

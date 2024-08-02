@@ -97,13 +97,22 @@ namespace LDMS
 
             foreach (var file in fileLists)
             {
-                BindFile fileList = new BindFile();
-                fileList.FileName = file.FileName;
-                fileList.FilePath = file.FilePath;
-                fileList.FileTime = file.FileTime;
-                fileList.FileImage = GetImage(file.FilePath);
-                fileList.FileDate =  FormFactory.GetDay(file.FileDate);
-                dataTables.Add(fileList);
+                
+                if (Directory.Exists(file.FilePath))
+                {
+                    BindFile fileList = new BindFile();
+                    fileList.FileName = file.FileName;
+                    fileList.FilePath = file.FilePath;
+                    fileList.FileTime = file.FileTime;
+                    fileList.FileImage = GetImage(file.FilePath);
+                    fileList.FileDate = FormFactory.GetDay(file.FileDate);
+                    dataTables.Add(fileList);
+                }
+                else
+                {
+                    fileLists.Remove(file);
+                }
+               
             }
             this.gridControl1.DataSource = dataTables;
         }

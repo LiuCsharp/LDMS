@@ -155,6 +155,7 @@ namespace LDMS
             // 
             // TName
             // 
+            TName.AppearanceCell.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             TName.AppearanceCell.Options.UseFont = true;
             TName.Caption = "TName";
             TName.FieldName = "TName";

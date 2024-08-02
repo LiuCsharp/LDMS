@@ -138,6 +138,7 @@ namespace LDMS
 
                 string data = JsonConvert.SerializeObject(frmFolder.controlDto);
                 File.WriteAllText(path, data);
+                this.Dispose(true);
                 e.Cancel = false;
             }
             else if (result == DialogResult.No)

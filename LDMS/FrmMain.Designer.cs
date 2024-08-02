@@ -42,12 +42,12 @@
             barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             barSubItem2 = new DevExpress.XtraBars.BarSubItem();
             barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            barSubItem3 = new DevExpress.XtraBars.BarSubItem();
             navigationPane1 = new DevExpress.XtraBars.Navigation.NavigationPane();
             FrmFolder = new DevExpress.XtraBars.Navigation.NavigationPage();
             FrmEmail = new DevExpress.XtraBars.Navigation.NavigationPage();
             FrmMyFolder = new DevExpress.XtraBars.Navigation.NavigationPage();
             FrmSettings = new DevExpress.XtraBars.Navigation.NavigationPage();
-            barSubItem3 = new DevExpress.XtraBars.BarSubItem();
             ((System.ComponentModel.ISupportInitialize)toolbarFormControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)toolbarFormManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)navigationPane1).BeginInit();
@@ -157,6 +157,12 @@
             barButtonItem4.Id = 9;
             barButtonItem4.Name = "barButtonItem4";
             // 
+            // barSubItem3
+            // 
+            barSubItem3.Caption = "barSubItem3";
+            barSubItem3.Id = 11;
+            barSubItem3.Name = "barSubItem3";
+            // 
             // navigationPane1
             // 
             navigationPane1.Controls.Add(FrmFolder);
@@ -181,7 +187,7 @@
             // 
             FrmFolder.BackgroundPadding = new System.Windows.Forms.Padding(0);
             FrmFolder.Caption = "文件管理";
-            FrmFolder.ImageOptions.SvgImage = Properties.Resources.actions_folderopen;
+            FrmFolder.ImageOptions.SvgImage = Properties.Resources.FolderOpen;
             FrmFolder.Name = "FrmFolder";
             FrmFolder.Properties.ShowCollapseButton = DevExpress.Utils.DefaultBoolean.False;
             FrmFolder.Properties.ShowExpandButton = DevExpress.Utils.DefaultBoolean.False;
@@ -191,7 +197,7 @@
             // FrmEmail
             // 
             FrmEmail.Caption = "邮件中心";
-            FrmEmail.ImageOptions.SvgImage = Properties.Resources.actions_envelopeclose;
+            FrmEmail.ImageOptions.SvgImage = Properties.Resources.Message;
             FrmEmail.Name = "FrmEmail";
             FrmEmail.Properties.ShowCollapseButton = DevExpress.Utils.DefaultBoolean.False;
             FrmEmail.Properties.ShowExpandButton = DevExpress.Utils.DefaultBoolean.False;
@@ -201,7 +207,7 @@
             // 
             FrmMyFolder.BackgroundPadding = new System.Windows.Forms.Padding(0);
             FrmMyFolder.Caption = "我的文件";
-            FrmMyFolder.ImageOptions.SvgImage = Properties.Resources.bo_price_item;
+            FrmMyFolder.ImageOptions.SvgImage = Properties.Resources.FavoriteStar;
             FrmMyFolder.Name = "FrmMyFolder";
             FrmMyFolder.Properties.ShowCollapseButton = DevExpress.Utils.DefaultBoolean.False;
             FrmMyFolder.Properties.ShowExpandButton = DevExpress.Utils.DefaultBoolean.False;
@@ -211,15 +217,9 @@
             // 
             FrmSettings.BackgroundPadding = new System.Windows.Forms.Padding(0);
             FrmSettings.Caption = "系统设置";
-            FrmSettings.ImageOptions.SvgImage = Properties.Resources.properties;
+            FrmSettings.ImageOptions.SvgImage = Properties.Resources.Setting;
             FrmSettings.Name = "FrmSettings";
             FrmSettings.Size = new System.Drawing.Size(1321, 612);
-            // 
-            // barSubItem3
-            // 
-            barSubItem3.Caption = "barSubItem3";
-            barSubItem3.Id = 11;
-            barSubItem3.Name = "barSubItem3";
             // 
             // FrmMain
             // 
@@ -234,6 +234,7 @@
             Controls.Add(toolbarFormControl1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             HelpButton = true;
+            IconOptions.SvgImage = Properties.Resources.Ethernet;
             IsMdiContainer = true;
             Name = "FrmMain";
             ToolbarFormControl = toolbarFormControl1;

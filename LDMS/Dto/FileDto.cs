@@ -49,6 +49,8 @@ namespace CopyTxtInfo.Dto
         //public Image FileImage { get; set; }
 
         public long FileSize { get; set; }
+
+        public string ImageString { get; set; }
     }
     public  enum FileParentType
     {
