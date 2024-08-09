@@ -81,6 +81,7 @@ namespace LDMS
         bool valueflag = true;
         int imageid = 0;
         bool changeFlag = true;
+        const string imagestring = "430424";
 
         public List<FileList> fileLists = new List<FileList>();
         //TreeListNode rootNode = new TreeListNode();
@@ -740,7 +741,7 @@ namespace LDMS
                         string imageString = string.Empty;
                         if (fileDto.FileType == "Folder")
                         {
-                            imageString = "430424";
+                            imageString = imagestring;
                         }
                         else 
                         {
@@ -863,6 +864,7 @@ namespace LDMS
             string[] dirs = Directory.GetDirectories(path);
             string[] files = Directory.GetFiles(path);
             ImageSize = new Size(16, 16);
+
             for (int i = 0; i < dirs.Length; i++)
             {
                 string[] info = new string[4];
@@ -978,7 +980,7 @@ namespace LDMS
             //filedto.FileImage = FileSystemHelper.GetImage(CurrentFolderPath, IconSizeType.Small, ImageSize);
             fileDtos.Add(filedto);
             fileList.Add(new TreeViewDto() { Id = rootNode.Id, ParentId = 0, TName = filedto.FileName, IsExpand = true });
-            imageDtos.Add(new ImageDto { ImageID = 0, ImageType = "Folder",ImageBase64String="430424" });
+            imageDtos.Add(new ImageDto { ImageID = 0, ImageType = "Folder",ImageBase64String= imagestring });
             b = a;
             a = rootNode.Id;
 
@@ -1797,22 +1799,20 @@ namespace LDMS
 
         private void groupControl2_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            groupControl2.Visible = false;
-            splitter1.Visible= false;
-            SetProperty("false");
+            SetProperty(false);
         }
 
         private void FileProperty_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            groupControl2.Visible = true;
-            splitter1.Visible = true;
-            SetProperty("true");
+        {           
+            SetProperty(true);
         }
 
-        public void SetProperty(string flag)
+        public void SetProperty(bool flag)
         {
+            groupControl2.Visible = flag;
+            splitter1.Visible = flag;
             Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["ShowProperty"].Value = flag;
+            config.AppSettings.Settings["ShowProperty"].Value = flag.ToString();
             config.Save(ConfigurationSaveMode.Modified);
             // 强制重新加载配置
             System.Configuration.ConfigurationManager.RefreshSection("AppSettings");
